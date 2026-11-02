@@ -26,6 +26,7 @@ img_arch = get_base64_img(r"static\report_assets\architecture_diagram.png")
 img_usecase = get_base64_img(r"static\report_assets\use_case_diagram.png")
 img_sequence = get_base64_img(r"static\report_assets\sequence_diagram.png")
 img_annotated = get_base64_img(r"static\annotated_sheet.jpg")
+img_live_ui = get_base64_img(r"static\report_assets\live_webapp_screenshot.png")
 
 html_template = f"""<!DOCTYPE html>
 <html lang="en">
@@ -672,6 +673,13 @@ Hough-based line detection and Canny edges are reliable ways to find ruled struc
 [4] Y. LeCun, L. Bottou, Y. Bengio and P. Haffner, "Gradient-based learning applied to document recognition," Proc. IEEE, vol. 86, no. 11, pp. 2278-2324, 1998.<br>
 [5] A. Vaswani et al., "Attention is all you need," in Adv. Neural Inf. Process. Syst. (NeurIPS), 2017.
 </p>
+
+<div class="page-break"></div>
+<h2>Appendix: Live Web Application Execution Screenshot</h2>
+<div class="img-container" style="margin-top: 15px;">
+  <img src="{img_live_ui}" alt="Live Web App Dashboard" style="width: 100%;">
+  <div class="caption">Fig. 5: Full-Screen Live UI Inspection & Evaluation Dashboard (FastAPI Engine Online, 10/10 Score, Segmented Sheet with Bounding Boxes, and Individual Question Confidence)</div>
+</div>
 
 </body>
 </html>
