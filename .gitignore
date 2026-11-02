@@ -1,0 +1,16 @@
+# Datasets and large image samples
+Train_Samples_V0/
+Archive/
+
+# Model binary weights (stored in LFS or downloaded on setup)
+best_models/*.pth
+best_models/*.keras
+
+# Python and system caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.log
+.ipynb_checkpoints/
+.vscode/
+.idea/

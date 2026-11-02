@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automatic Evaluation of Handwritten Answer Sheets</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">📝</div>
+        <div class="brand-text">
+          <h1>Handwritten Sheet Evaluator AI</h1>
+          <p>Powered by Vision Transformer (ViT) &amp; Convolutional Neural Networks (CNN)</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          <span>FastAPI Engine Online</span>
+        </div>
+        <button id="themeToggleBtn" class="btn-icon" title="Toggle Dark/Light Mode">☀️</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-wrapper">
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="tab-single">
+        <span>📄</span> Single Sheet Evaluation
+      </button>
+      <button class="tab-btn" data-tab="tab-roster">
+        <span>🎓</span> Student Roster &amp; Leaderboard
+      </button>
+      <button class="tab-btn" data-tab="tab-batch">
+        <span>📚</span> Quick Batch Grading
+      </button>
+      <button class="tab-btn" data-tab="tab-gallery">
+        <span>🖼️</span> Repository Sample Sheets
+      </button>
+    </nav>
+
+    <!-- Tab 1: Single Sheet Evaluation -->
+    <div id="tab-single" class="tab-content" style="display: block;">
+      <div class="layout-grid">
+
+        <!-- Config Sidebar -->
+        <aside class="config-card">
+          <h3 class="card-title">⚙️ Evaluation Settings</h3>
+
+          <!-- Model Choice -->
+          <div class="form-group">
+            <label class="form-label">Deep Learning Model</label>
+            <div class="model-options">
+              <label class="model-radio">
+                <input type="radio" name="modelType" value="vit" checked>
+                <div class="model-box">
+                  <div class="model-title">
+                    ViT-B/16
+                    <span class="model-badge">Best</span>
+                  </div>
+                  <span class="model-sub">Vision Transformer (99%+ Accuracy)</span>
+                </div>
+              </label>
+              <label class="model-radio">
+                <input type="radio" name="modelType" value="cnn">
+                <div class="model-box">
+                  <div class="model-title">
+                    CNN
+                    <span class="model-badge" style="background: var(--accent-violet); color: #fff;">Fast</span>
+                  </div>
+                  <span class="model-sub">Custom ConvNet Architecture</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Answer Key -->
+          <div class="form-group">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="form-label">Answer Key (10 Questions)</label>
+              <span style="font-size: 0.72rem; color: var(--text-muted);">Click chip to toggle</span>
+            </div>
+            <div id="answerGrid" class="answer-grid">
+              <!-- Rendered via JS -->
+            </div>
+            <div class="preset-btns">
+              <button class="btn-xs btn-preset" data-preset="preset1">Preset 1</button>
+              <button class="btn-xs btn-preset" data-preset="preset2">Preset 2</button>
+              <button class="btn-xs btn-preset" data-preset="allTrue">All True</button>
+              <button class="btn-xs btn-preset" data-preset="allFalse">All False</button>
+              <button class="btn-xs btn-preset" data-preset="invert">Invert</button>
+            </div>
+          </div>
+
+          <!-- Rotation Control -->
+          <div class="form-group">
+            <label class="form-label">Image Orientation Adjustment</label>
+            <div class="rotation-group">
+              <button class="btn-rot active" data-rot="0">0°</button>
+              <button class="btn-rot" data-rot="90">90°</button>
+              <button class="btn-rot" data-rot="180">180°</button>
+              <button class="btn-rot" data-rot="270">270°</button>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+
+          <!-- Dropzone -->
+          <div id="dropzone" class="dropzone">
+            <div class="dropzone-icon">📤</div>
+            <h3 class="dropzone-title">Upload Handwritten Answer Sheet</h3>
+            <p class="dropzone-desc">Drag &amp; drop an image here or click to browse (JPG, JPEG, PNG)</p>
+            <input type="file" id="fileInput" class="file-input" accept="image/jpeg,image/png,image/jpg">
+          </div>
+
+          <!-- Selected File Preview Banner -->
+          <div id="previewBanner" class="preview-banner" style="display: none;">
+            <div class="banner-left">
+              <img id="bannerThumb" class="banner-thumb" src="" alt="Selected Preview">
+              <div class="banner-info">
+                <h4 id="bannerFilename">sheet.jpg</h4>
+                <p id="bannerFilesize">3.2 MB • Ready</p>
+              </div>
+            </div>
+            <button id="removeFileBtn" class="btn-icon" title="Remove file" style="color: var(--accent-rose);">✕</button>
+          </div>
+
+          <!-- Action Button -->
+          <button id="evaluateBtn" class="btn-primary" disabled>
+            <span id="evalSpinner" class="spinner" style="display: none;"></span>
+            <span id="evalBtnText">Evaluate Answer Sheet</span>
+          </button>
+
+          <!-- Results Card -->
+          <section id="resultsCard" class="results-card" style="display: none;">
+            <h3 class="card-title">📊 Evaluation Summary</h3>
+
+            <div class="hero-stats">
+              <div id="statBoxScore" class="stat-box success">
+                <span class="stat-label">Total Score</span>
+                <span id="resScore" class="stat-value">--</span>
+                <span id="resScoreSub" class="stat-sub">--</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Letter Grade</span>
+                <span id="resGrade" class="stat-value" style="color: var(--accent-blue);">--</span>
+                <span class="stat-sub">Based on Standard Scale</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">AI Model Used</span>
+                <span id="resModel" class="stat-value" style="font-size: 1.35rem; color: var(--accent-emerald);">--</span>
+                <span class="stat-sub">Classifier Architecture</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">Processing Time</span>
+                <span id="resTime" class="stat-value" style="font-size: 1.35rem;">--</span>
+                <span class="stat-sub">End-to-End Latency</span>
+              </div>
+            </div>
+
+            <!-- Visual Inspector Grid -->
+            <div class="inspector-grid">
+              <div class="annotated-container">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <h4 style="font-size: 0.92rem; font-weight: 700;">🎯 Segmented Answer Sheet</h4>
+                  <span style="font-size: 0.75rem; color: var(--text-muted); cursor: pointer;">🔍 Click to Zoom</span>
+                </div>
+                <img id="annotatedSheetImg" class="annotated-img" src="" alt="Annotated Sheet">
+              </div>
+
+              <!-- Extracted Cell Cards -->
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <h4 style="font-size: 0.92rem; font-weight: 700;">🔍 Individual Question Cells Breakdown</h4>
+                <div id="cellCardsList" class="cell-list">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Student Roster & Leaderboard Ranking -->
+    <div id="tab-roster" class="tab-content" style="display: none;">
+      <div class="batch-wrapper">
+        <div class="batch-actions">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700;">Student Roster &amp; Ranking System</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Add students, assign their handwritten papers, grade them together, and discover the top &amp; bottom ranked students.
+            </p>
+          </div>
+          <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+            <button id="addStudentBtn" class="btn-primary" style="background: linear-gradient(135deg, #0284c7, #2563eb); width: auto; font-size: 0.85rem; padding: 0.6rem 1rem;">
+              ➕ Add Student
+            </button>
+            <button id="autoFill5Btn" class="btn-primary" style="background: linear-gradient(135deg, #059669, #10b981); width: auto; font-size: 0.85rem; padding: 0.6rem 1rem;">
+              ⚡ Fill 5 Sample Students
+            </button>
+            <button id="autoFill10Btn" class="btn-primary" style="background: linear-gradient(135deg, #0891b2, #06b6d4); width: auto; font-size: 0.85rem; padding: 0.6rem 1rem;">
+              ⚡ Fill 10 Sample Students
+            </button>
+            <button id="clearRosterBtn" class="btn-primary" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-secondary); width: auto; font-size: 0.85rem; padding: 0.6rem 1rem;">
+              🗑️ Clear
+            </button>
+          </div>
+        </div>
+
+        <!-- Student Rows Card -->
+        <div class="roster-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h4 style="font-size: 0.95rem; font-weight: 700;">Classroom Roster Queue (<span id="rosterCount">0</span> Students)</h4>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">Assign student names and attach their answer papers</span>
+          </div>
+
+          <div id="studentRowsList" class="student-list">
+            <!-- Dynamically populated via JS -->
+          </div>
+
+          <button id="evaluateRosterBtn" class="btn-primary" style="margin-top: 0.5rem; font-size: 1.05rem; padding: 0.9rem;" disabled>
+            <span id="rosterSpinner" class="spinner" style="display: none;"></span>
+            <span id="rosterBtnText">🏆 Evaluate Class &amp; Rank Students</span>
+          </button>
+        </div>
+
+        <!-- Leaderboard & Analytics Results -->
+        <section id="rosterResults" class="results-card" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+            <h3 class="card-title">🏆 Class Performance &amp; Final Rankings</h3>
+            <button id="exportStudentsCsvBtn" class="btn-primary" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); width: auto; font-size: 0.85rem; padding: 0.5rem 1rem;">
+              📥 Download Ranked Leaderboard (CSV)
+            </button>
+          </div>
+
+          <!-- Analytics Summary Cards -->
+          <div class="hero-stats">
+            <div class="stat-box">
+              <span class="stat-label">Total Students</span>
+              <span id="rosterTotalStudents" class="stat-value">0</span>
+              <span class="stat-sub">Graded Answer Sheets</span>
+            </div>
+            <div class="stat-box success">
+              <span class="stat-label">Class Average</span>
+              <span id="rosterAvgScore" class="stat-value">0 / 10</span>
+              <span id="rosterAvgPct" class="stat-sub">0% Overall</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Highest Score</span>
+              <span id="rosterHighestScore" class="stat-value" style="color: var(--accent-emerald);">0</span>
+              <span class="stat-sub">Top Rank Score</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Pass Rate</span>
+              <span id="rosterPassRate" class="stat-value" style="color: var(--accent-blue);">0%</span>
+              <span id="rosterPassedCount" class="stat-sub">0 Passed</span>
+            </div>
+          </div>
+
+          <!-- Top Performers Podium (Rank 1, 2, 3) -->
+          <div>
+            <h4 style="font-size: 1.05rem; font-weight: 800; margin-bottom: 0.75rem; color: #fbbf24;">
+              🥇 Top Ranked Students (Podium)
+            </h4>
+            <div id="podiumContainer" class="podium-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Bottom Ranked / Attention Needed Alert -->
+          <div id="bottomRankedCard" class="attention-card" style="display: none;">
+            <div class="attention-title">
+              <span>⚠️</span>
+              <span>Needs Attention / Bottom Ranked Students</span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary);">
+              The following students scored lowest or need remedial intervention:
+            </p>
+            <div id="bottomRankedList" class="attention-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Complete Leaderboard Table -->
+          <div>
+            <h4 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">
+              📋 Complete Class Standings &amp; Marks
+            </h4>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Student Name</th>
+                    <th>Sheet Preview</th>
+                    <th>Score</th>
+                    <th>Percentage</th>
+                    <th>Letter Grade</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="rosterTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Tab 3: Quick Batch Grading & CSV Export -->
+    <div id="tab-batch" class="tab-content" style="display: none;">
+      <div class="batch-wrapper">
+        <div class="batch-actions">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 700;">Fast Batch Sheet Grading</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Grade multiple student answer sheets simultaneously and generate a graded CSV report.</p>
+          </div>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button id="batchSampleBtn" class="btn-primary" style="background: linear-gradient(135deg, #059669, #10b981); width: auto;">
+              🚀 Grade All Repository Samples
+            </button>
+            <button id="exportCsvBtn" class="btn-primary" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); display: none; width: auto;">
+              📥 Download Graded_sheets.csv
+            </button>
+          </div>
+        </div>
+
+        <!-- Batch Dropzone -->
+        <div id="batchDropzone" class="dropzone">
+          <div class="dropzone-icon">📁</div>
+          <h3 class="dropzone-title">Upload Multiple Sheets</h3>
+          <p id="batchFileCount" class="dropzone-desc">Select multiple image files to grade as a batch</p>
+          <input type="file" id="batchFileInput" class="file-input" multiple accept="image/jpeg,image/png,image/jpg">
+        </div>
+
+        <button id="batchEvaluateBtn" class="btn-primary" disabled>
+          <span id="batchSpinner" class="spinner" style="display: none;"></span>
+          <span id="batchBtnText">Evaluate Uploaded Files</span>
+        </button>
+
+        <!-- Batch Results -->
+        <section id="batchResults" class="results-card" style="display: none;">
+          <h3 class="card-title">📈 Batch Evaluation Analytics</h3>
+
+          <div class="hero-stats">
+            <div class="stat-box">
+              <span class="stat-label">Total Sheets</span>
+              <span id="batchTotalSheets" class="stat-value">0</span>
+            </div>
+            <div class="stat-box success">
+              <span class="stat-label">Class Average</span>
+              <span id="batchAvgScore" class="stat-value">0</span>
+              <span id="batchAvgPercent" class="stat-sub">0%</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Pass Rate</span>
+              <span id="batchPassRate" class="stat-value" style="color: var(--accent-emerald);">0%</span>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Image ID / Filename</th>
+                  <th>Predicted Marks</th>
+                  <th>Percentage</th>
+                  <th>Grade</th>
+                  <th>Model</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="batchTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Tab 4: Repository Sample Sheets Gallery -->
+    <div id="tab-gallery" class="tab-content" style="display: none;">
+      <div style="margin-bottom: 1.5rem;">
+        <h3 style="font-size: 1.15rem; font-weight: 700;">Pre-loaded Test Sheets Gallery</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Quickly test any of the answer sheets from the dataset with a single click.</p>
+      </div>
+      <div id="galleryGrid" class="gallery-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Fullscreen Image Modal -->
+  <div id="imageModal" class="modal-overlay">
+    <div class="modal-content">
+      <button id="modalClose" class="modal-close">&times;</button>
+      <img id="modalImg" class="modal-img" src="" alt="Fullscreen Inspection">
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
