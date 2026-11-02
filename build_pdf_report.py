@@ -9,6 +9,9 @@ DOWNLOADS_DIR = r"C:\Users\SATHVIK\Downloads"
 HTML_OUT_PATH = os.path.join(BASE_DIR, "Project_Review_Report.html")
 PDF_OUT_PATH = os.path.join(BASE_DIR, "Project_Review_Report.pdf")
 
+GITHUB_URL = "https://github.com/hanumasathvik75/new-ai"
+VIDEO_URL = "https://drive.google.com/file/d/12gc56Sjc0x0mXaKbEBxthbK8EB3xyGHW/view?usp=drivesdk"
+
 def get_base64_img(rel_path):
     full_path = os.path.join(BASE_DIR, rel_path)
     if os.path.exists(full_path):
@@ -24,160 +27,164 @@ img_usecase = get_base64_img(r"static\report_assets\use_case_diagram.png")
 img_sequence = get_base64_img(r"static\report_assets\sequence_diagram.png")
 img_annotated = get_base64_img(r"static\annotated_sheet.jpg")
 
-html_template = """<!DOCTYPE html>
+html_template = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Project Review Report - Automatic Evaluation of Handwritten Answer Sheets</title>
 <style>
-  @page {
+  @page {{
     size: A4;
-    margin: 20mm 15mm 20mm 15mm;
-  }
-  body {
+    margin: 18mm 15mm 18mm 15mm;
+  }}
+  body {{
     font-family: 'Times New Roman', Times, serif;
-    font-size: 11pt;
-    line-height: 1.5;
+    font-size: 10.5pt;
+    line-height: 1.45;
     color: #111827;
     background: #ffffff;
     margin: 0;
     padding: 0;
-  }
-  .page-break {
+  }}
+  .page-break {{
     page-break-before: always;
-  }
-  h1, h2, h3, h4 {
+  }}
+  h1, h2, h3, h4 {{
     font-family: Arial, Helvetica, sans-serif;
     color: #0f172a;
-    margin-top: 14pt;
-    margin-bottom: 6pt;
-  }
-  h1 { font-size: 16pt; text-align: center; font-weight: bold; text-transform: uppercase; }
-  h2 { font-size: 13pt; font-weight: bold; border-bottom: 1.5px solid #2563eb; padding-bottom: 3px; margin-top: 18pt; }
-  h3 { font-size: 11pt; font-weight: bold; margin-top: 10pt; }
-  p {
+    margin-top: 12pt;
+    margin-bottom: 5pt;
+  }}
+  h1 {{ font-size: 15pt; text-align: center; font-weight: bold; text-transform: uppercase; }}
+  h2 {{ font-size: 12pt; font-weight: bold; border-bottom: 1.5px solid #2563eb; padding-bottom: 3px; margin-top: 15pt; }}
+  h3 {{ font-size: 10.5pt; font-weight: bold; margin-top: 8pt; }}
+  p {{
     text-align: justify;
-    margin-bottom: 6pt;
+    margin-bottom: 5pt;
     text-indent: 1.5em;
-  }
-  p.no-indent {
+  }}
+  p.no-indent {{
     text-indent: 0;
-  }
-  .cover-page {
+  }}
+  .cover-page {{
     text-align: center;
-    padding-top: 25px;
-  }
-  .school-header {
+    padding-top: 20px;
+  }}
+  .school-header {{
     font-family: Arial, sans-serif;
-    font-size: 14pt;
+    font-size: 13.5pt;
     font-weight: bold;
     color: #1e3a8a;
     text-transform: uppercase;
     margin-bottom: 4px;
-  }
-  .sub-header {
-    font-size: 11pt;
+  }}
+  .sub-header {{
+    font-size: 10.5pt;
     color: #475569;
     font-weight: 600;
-    margin-bottom: 20px;
-  }
-  .course-box {
+    margin-bottom: 15px;
+  }}
+  .course-box {{
     background: #f1f5f9;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
-    padding: 10px;
-    margin: 15px auto;
+    padding: 9px;
+    margin: 12px auto;
     width: 85%;
     font-family: Arial, sans-serif;
-    font-size: 10.5pt;
-  }
-  .project-title-box {
-    margin: 25px 0;
-    padding: 16px;
+    font-size: 10pt;
+  }}
+  .project-title-box {{
+    margin: 20px 0;
+    padding: 14px;
     border: 2px solid #2563eb;
     background: #eff6ff;
     border-radius: 8px;
-  }
-  .project-title-box h1 {
-    font-size: 14pt;
+  }}
+  .project-title-box h1 {{
+    font-size: 13.5pt;
     color: #1e3a8a;
-    line-height: 1.4;
+    line-height: 1.35;
     margin: 0;
-  }
-  .team-table {
+  }}
+  .team-table {{
     width: 95%;
-    margin: 20px auto;
+    margin: 15px auto;
     border-collapse: collapse;
-    font-size: 10pt;
-  }
-  .team-table th, .team-table td {
+    font-size: 9.5pt;
+  }}
+  .team-table th, .team-table td {{
     border: 1px solid #94a3b8;
-    padding: 8px;
+    padding: 6px 8px;
     text-align: center;
-  }
-  .team-table th {
+  }}
+  .team-table th {{
     background: #e2e8f0;
     font-family: Arial, sans-serif;
     font-weight: bold;
-  }
-  .guide-box {
-    margin-top: 30px;
-    font-size: 11pt;
-  }
-  table.report-table {
+  }}
+  .guide-box {{
+    margin-top: 25px;
+    font-size: 10.5pt;
+  }}
+  table.report-table {{
     width: 100%;
     border-collapse: collapse;
-    margin: 10pt 0;
-    font-size: 9.5pt;
-  }
-  table.report-table th, table.report-table td {
+    margin: 8pt 0;
+    font-size: 9pt;
+  }}
+  table.report-table th, table.report-table td {{
     border: 1px solid #cbd5e1;
-    padding: 6px 8px;
+    padding: 5px 7px;
     text-align: left;
     vertical-align: top;
-  }
-  table.report-table th {
+  }}
+  table.report-table th {{
     background: #f1f5f9;
     font-family: Arial, sans-serif;
     font-weight: bold;
     color: #1e293b;
-  }
-  table.report-table tr:nth-child(even) td {
+  }}
+  table.report-table tr:nth-child(even) td {{
     background: #f8fafc;
-  }
-  .caption {
-    font-size: 9pt;
+  }}
+  .caption {{
+    font-size: 8.5pt;
     font-weight: bold;
     text-align: center;
-    margin-top: 4pt;
-    margin-bottom: 8pt;
+    margin-top: 3pt;
+    margin-bottom: 7pt;
     color: #334155;
-  }
-  .img-container {
+  }}
+  .img-container {{
     text-align: center;
-    margin: 10pt 0 4pt 0;
-  }
-  .img-container img {
+    margin: 8pt 0 3pt 0;
+  }}
+  .img-container img {{
     max-width: 95%;
-    max-height: 360px;
+    max-height: 340px;
     border: 1px solid #cbd5e1;
     border-radius: 4px;
-  }
-  .abstract-box {
+  }}
+  .abstract-box {{
     background: #f8fafc;
     border: 1px solid #cbd5e1;
-    padding: 12px;
+    padding: 10px;
     border-radius: 6px;
-    margin: 15px 0;
-  }
-  .formula-box {
+    margin: 12px 0;
+  }}
+  .formula-box {{
     background: #f1f5f9;
-    padding: 8px 12px;
+    padding: 6px 10px;
     border-left: 3px solid #2563eb;
-    margin: 8px 0;
+    margin: 6px 0;
     font-family: 'Consolas', monospace;
-    font-size: 9.5pt;
-  }
+    font-size: 9pt;
+  }}
+  a {{
+    color: #2563eb;
+    text-decoration: underline;
+  }}
 </style>
 </head>
 <body>
@@ -188,13 +195,13 @@ html_template = """<!DOCTYPE html>
   <div class="sub-header">Fall Semester 2026</div>
 
   <div class="course-box">
-    <strong>Course:</strong> CSE3000 - Engineering Project / Comprehensive Review<br>
-    <strong>Activity:</strong> Project Review - I &nbsp;|&nbsp; <strong>Class ID:</strong> VL20262705001<br>
-    <strong>Date of Review:</strong> 02 / 11 / 2026
+    <strong>Course:</strong> BCSE306L - Artificial Intelligence<br>
+    <strong>Activity:</strong> Course Project Review - 2 &nbsp;|&nbsp; <strong>Class ID:</strong> VL20262705001<br>
+    <strong>Date of Review:</strong> 28 / 10 / 2026
   </div>
 
   <div class="project-title-box">
-    <h1>AUTOMATIC EVALUATION AND LEADERBOARD RANKING OF HANDWRITTEN ANSWER SHEETS USING VISION TRANSFORMERS AND COMPUTER VISION</h1>
+    <h1>AUTOMATIC EVALUATION OF HANDWRITTEN ANSWER SHEETS</h1>
   </div>
 
   <p class="no-indent" style="text-align: center; font-weight: bold; margin-bottom: 8px;">Presented by Student Team:</p>
@@ -210,29 +217,29 @@ html_template = """<!DOCTYPE html>
     <tbody>
       <tr>
         <td>1</td>
-        <td><strong>D Sathvik</strong></td>
+        <td><strong>D. Sathvik</strong></td>
         <td>24BDE0174</td>
         <td>Lead System Architect & Deep Learning Engineer</td>
       </tr>
       <tr>
         <td>2</td>
-        <td><strong>K Devendra</strong></td>
+        <td><strong>K. Devendra</strong></td>
         <td>24BDE0148</td>
-        <td>Computer Vision & Image Processing Slicing Engineer</td>
+        <td>Full-Stack Web UI/UX & Verification Engineer</td>
       </tr>
       <tr>
         <td>3</td>
-        <td><strong>R Guru Charan</strong></td>
+        <td><strong>R. V. Guru Charan</strong></td>
         <td>24BDE0075</td>
-        <td>Full-Stack Web UI/UX & Verification Engineer</td>
+        <td>Computer Vision & Slicing Pipeline Engineer</td>
       </tr>
     </tbody>
   </table>
 
   <div class="guide-box">
     <p class="no-indent" style="text-align: center; margin: 0;">Under the Esteemed Guidance of</p>
-    <h3 style="margin: 4px 0 2px 0; color: #1e3a8a; font-size: 13pt;">Prof. Nivedita S</h3>
-    <p class="no-indent" style="text-align: center; font-size: 10.5pt; color: #475569; margin: 0;">Assistant Professor, SCORE</p>
+    <h3 style="margin: 4px 0 2px 0; color: #1e3a8a; font-size: 12pt;">Prof. Nivedita S</h3>
+    <p class="no-indent" style="text-align: center; font-size: 10pt; color: #475569; margin: 0;">Assistant Professor, SCORE</p>
   </div>
 </div>
 
@@ -246,26 +253,26 @@ html_template = """<!DOCTYPE html>
 <h3>1. Project Particulars</h3>
 <table class="report-table">
   <tr><th style="width: 25%;">Particular</th><th>Details</th></tr>
-  <tr><td><strong>Project Title</strong></td><td>Automatic Evaluation and Leaderboard Ranking of Handwritten Answer Sheets Using Vision Transformers</td></tr>
-  <tr><td><strong>Area of Application</strong></td><td>Computer Vision, Deep Learning, Document AI & Automated Academic Grading Systems</td></tr>
-  <tr><td><strong>Scope of the Project</strong></td><td>End-to-end framework integrating automatic paper deskewing, Hough Transform table column boundary detection, horizontal cell division, handwriting classification (True/False/Empty) using ViT-B/16 and CNN, real-time classroom roster grading, and top/bottom leaderboard analytics.</td></tr>
+  <tr><td><strong>Project Title</strong></td><td>Automatic Evaluation of Handwritten Answer Sheets</td></tr>
+  <tr><td><strong>Area of Application</strong></td><td>Educational technology: automated examination assessment</td></tr>
+  <tr><td><strong>Scope</strong></td><td>Automatic grading of handwritten True / False / Empty answer sheets with 10 questions per sheet: orientation correction, answer-column and row detection, Vision Transformer classification, scoring, class ranking and CSV export. The current scope covers three answer types (True, False, Empty).</td></tr>
 </table>
 
 <h3>2. Alignment with Sustainable Development Goals (SDGs)</h3>
 <table class="report-table">
   <thead>
-    <tr><th style="width: 15%;">SDG No.</th><th style="width: 30%;">SDG Title</th><th>Justification & Impact</th></tr>
+    <tr><th style="width: 15%;">SDG No.</th><th style="width: 30%;">SDG Title</th><th>Justification</th></tr>
   </thead>
   <tbody>
     <tr>
       <td><strong>SDG 4</strong></td>
       <td>Quality Education</td>
-      <td>Promotes equitable and impartial examination assessment by eliminating fatigue-induced human grading bias, speeding up feedback loops from weeks to seconds, and identifying students in need of academic remedial support.</td>
+      <td>Speeds up and standardises assessment, giving students faster and more consistent feedback and freeing teachers' time for teaching.</td>
     </tr>
     <tr>
       <td><strong>SDG 9</strong></td>
-      <td>Industry, Innovation, and Infrastructure</td>
-      <td>Fosters digital transformation in educational institutions through modern Document AI, edge-compatible inference, and automated grading pipelines.</td>
+      <td>Industry, Innovation and Infrastructure</td>
+      <td>Applies deep learning and computer vision to modernise examination infrastructure in educational institutions.</td>
     </tr>
   </tbody>
 </table>
@@ -273,56 +280,69 @@ html_template = """<!DOCTYPE html>
 <h3>3. Inputs – Features – Outputs</h3>
 <table class="report-table">
   <thead>
-    <tr><th style="width: 8%;">S. No.</th><th style="width: 27%;">Feature</th><th style="width: 30%;">Input Given</th><th>Feature Output</th></tr>
+    <tr><th style="width: 8%;">S. No.</th><th style="width: 27%;">Feature</th><th style="width: 30%;">Input Given</th><th>Output</th></tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td>Preprocessing & Deskewing</td>
-      <td>Raw high-resolution camera photo / scan (JPG/PNG)</td>
-      <td>Deskewed, contrast-enhanced 900px normalized image</td>
+      <td>Orientation and preprocessing</td>
+      <td>Raw sheet photo or scan from any camera or scanner</td>
+      <td>Upright image, longest side 900 px</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>Hough Line Slicing</td>
-      <td>Preprocessed grayscale sheet</td>
-      <td>10 isolated question cell crops extracted from answer column</td>
+      <td>Answer-column detection and row slicing</td>
+      <td>Upright sheet image</td>
+      <td>10 cell crops (C1 to C10)</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>ViT Handwriting Classification</td>
-      <td>10 isolated cell image crops</td>
-      <td>Classification vector (True, False, Empty) with confidence scores</td>
+      <td>Answer classification (ViT-B/16)</td>
+      <td>Each cell crop resized to 224 x 224 x 3</td>
+      <td>Class Empty / False / True with confidence</td>
     </tr>
     <tr>
-      <td colspan="2"><strong>Final System Output</strong></td>
-      <td colspan="2">Comprehensive scorecard (Marks/10, Grade A+-F), annotated segmentation overlay, classroom leaderboard podium (1st, 2nd, 3rd), and exportable Graded_sheets.csv.</td>
+      <td>4</td>
+      <td>Scoring, ranking and export</td>
+      <td>Predicted answers, answer key, class roster</td>
+      <td>Score, percentage, grade, rank, ranked CSV</td>
+    </tr>
+    <tr>
+      <td colspan="2"><strong>Final Output</strong></td>
+      <td colspan="2">Graded result (score, percentage, grade) for every student sheet and a ranked class leaderboard exported as CSV.</td>
     </tr>
   </tbody>
 </table>
 
-<h3>4. Technical Stack</h3>
+<h3>4. Demo Video</h3>
 <table class="report-table">
-  <tr><th style="width: 25%;">Layer</th><th>Technology / Tool</th></tr>
-  <tr><td><strong>Frontend</strong></td><td>HTML5, CSS3 (Modern Glassmorphic Dark/Light Themes), Vanilla JavaScript (ES6+)</td></tr>
-  <tr><td><strong>Backend</strong></td><td>FastAPI (Python 3.12), Uvicorn ASGI Server, Multipart Form Parser</td></tr>
-  <tr><td><strong>Database / State</strong></td><td>In-memory session state, CSV persistence engine</td></tr>
-  <tr><td><strong>AI / ML Models</strong></td><td>PyTorch (ViT-B/16 Self-Attention), TensorFlow/Keras (CNN Baseline), OpenCV 4.13, Pillow, NumPy</td></tr>
-  <tr><td><strong>Tools & IDE</strong></td><td>Visual Studio Code, Git, Git LFS, Swagger UI</td></tr>
-  <tr><td><strong>Hosting / Execution</strong></td><td>Localhost (Port 8000), Windows Service Batch Launcher (run_app.bat)</td></tr>
+  <tr><th style="width: 25%;">Particular</th><th>Details</th></tr>
+  <tr><td><strong>Video URL</strong></td><td><a href="{VIDEO_URL}">{VIDEO_URL}</a></td></tr>
+  <tr><td><strong>Duration</strong></td><td>02:49</td></tr>
 </table>
 
-<h3>5. Architecture Diagram</h3>
+<h3>5. Technical Stack</h3>
+<table class="report-table">
+  <tr><th style="width: 25%;">Layer</th><th>Technology / Tool</th></tr>
+  <tr><td><strong>Frontend</strong></td><td>HTML / CSS / JavaScript single-page app (dark and light glass UI)</td></tr>
+  <tr><td><strong>Backend</strong></td><td>Python, FastAPI (/api/evaluate, evaluate-students, CSV export)</td></tr>
+  <tr><td><strong>Database</strong></td><td>None; results are exported as ranked CSV</td></tr>
+  <tr><td><strong>AI / ML Models & Libraries</strong></td><td>PyTorch ViT-B/16 (343 MB weights), Keras CNN baseline, OpenCV (resize, rotate, Canny, Hough)</td></tr>
+  <tr><td><strong>Tools & IDE</strong></td><td>Git and Git LFS; launchers run_app.bat and run_server.py</td></tr>
+  <tr><td><strong>Deployment / Hosting</strong></td><td>Runs locally through the launchers (CPU inference)</td></tr>
+</table>
+
+<h3>6. Architecture Diagram</h3>
 <div class="img-container">
-  <img src="__IMG_ARCH__" alt="Architecture Diagram">
-  <div class="caption">Fig. 1: System Architecture Pipeline – From Raw Paper to Evaluated Classroom Leaderboard</div>
+  <img src="{img_arch}" alt="Architecture Diagram">
+  <div class="caption">Fig. 1: System architecture of the handwritten answer-sheet evaluator</div>
 </div>
 
 <div class="page-break"></div>
 
 <h2>PART B – Team and Project Journey</h2>
 
-<h3>1. Division of Work and Skills Matrix</h3>
+<h3>1. Division of Work and Skills</h3>
 <table class="report-table">
   <thead>
     <tr>
@@ -330,124 +350,165 @@ html_template = """<!DOCTYPE html>
       <th>Student Name</th>
       <th>Reg. No.</th>
       <th>Work Done</th>
-      <th>Skills Known</th>
-      <th>Skills Acquired</th>
+      <th>Technical Skills Already Known</th>
+      <th>Skills, Tools & Knowledge Acquired</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td><strong>D Sathvik</strong></td>
+      <td><strong>D. Sathvik</strong></td>
       <td>24BDE0174</td>
-      <td>ViT model integration, tensor batch inference optimization, student ranking algorithm, FastAPI endpoints, project orchestration</td>
-      <td>Python, Deep Learning basics</td>
-      <td>Vision Transformers (ViT-B/16 self-attention), FastAPI async APIs, Git LFS checkpoint handling</td>
+      <td>Lead system architect and deep learning engineer: designed the end-to-end pipeline, built and integrated the ViT-B/16 classifier and the CNN baseline, and defined the scoring and ranking flow.</td>
+      <td>Python, Deep Learning fundamentals, PyTorch basics, Git</td>
+      <td>PyTorch, Vision Transformers (ViT-B/16), Keras CNN, system design</td>
     </tr>
     <tr>
       <td>2</td>
-      <td><strong>K Devendra</strong></td>
+      <td><strong>K. Devendra</strong></td>
       <td>24BDE0148</td>
-      <td>Hough Line Transform pipeline, Canny edge detection, horizontal cluster averaging, affine tilt correction, cell extraction fallback grid</td>
-      <td>Python, OpenCV basics</td>
-      <td>Morphological Operations, Hough transform accumulator tuning, robust edge contour detection</td>
+      <td>Full-stack web UI/UX and verification engineer: built the single-page web interface (dark and light glass UI), connected it to the FastAPI endpoints and verified results end to end.</td>
+      <td>HTML, CSS, JavaScript, Web development basics, REST APIs</td>
+      <td>HTML / CSS / JavaScript, FastAPI integration, testing and verification</td>
     </tr>
     <tr>
       <td>3</td>
-      <td><strong>R Guru Charan</strong></td>
+      <td><strong>R. V. Guru Charan</strong></td>
       <td>24BDE0075</td>
-      <td>Responsive web frontend (HTML/CSS/JS), Dark/Light theme system, interactive single & roster upload forms, test cases and CSV export validation</td>
-      <td>HTML, CSS, JavaScript basics</td>
-      <td>Modern Glassmorphic CSS design, dynamic DOM rendering, RESTful API integration, batch test verification</td>
+      <td>Computer vision and slicing: implemented rescaling and orientation correction, Canny and Hough answer-column detection, row-separator detection and the fail-safe grid that always yields 10 cells.</td>
+      <td>Python, OpenCV basics, Image Processing fundamentals, Linear Algebra</td>
+      <td>OpenCV, Canny edge detection, Hough transform, image slicing</td>
     </tr>
   </tbody>
 </table>
 
-<h3>2. Project Phases and Implementation Schedule</h3>
+<h3>2. Phases and Plan</h3>
 <table class="report-table">
   <thead>
-    <tr><th>Phase</th><th>Key Activities</th><th>Timeline</th><th>Status</th></tr>
+    <tr><th>Phase</th><th>Activities</th><th>Timeline (From – To)</th><th>Status</th></tr>
   </thead>
   <tbody>
-    <tr><td><strong>Phase 1</strong></td><td>Requirements gathering, problem formulation, dataset acquisition, Hough transform prototyping</td><td>15/08/2026 – 31/08/2026</td><td>Completed</td></tr>
-    <tr><td><strong>Phase 2</strong></td><td>Vision Transformer (ViT-B/16) fine-tuning, CNN baseline training, Git LFS model checkpoint integration</td><td>01/09/2026 – 25/09/2026</td><td>Completed</td></tr>
-    <tr><td><strong>Phase 3</strong></td><td>FastAPI backend, HTML/CSS/JS UI, classroom leaderboard ranking, edge fallback mechanisms</td><td>26/09/2026 – 20/10/2026</td><td>Completed</td></tr>
-    <tr><td><strong>Phase 4</strong></td><td>System testing, benchmark evaluations, review documentation, and packaging</td><td>21/10/2026 – 02/11/2026</td><td>Completed</td></tr>
+    <tr><td>Phase 1: Design and preprocessing</td><td>Problem study, sheet format analysis, rescaling and orientation correction</td><td>15/08/2026 – 31/08/2026</td><td>Completed</td></tr>
+    <tr><td>Phase 2: Cell extraction</td><td>Hough column detection, row-separator detection, fail-safe uniform grid</td><td>01/09/2026 – 25/09/2026</td><td>Completed</td></tr>
+    <tr><td>Phase 3: Classification models</td><td>ViT-B/16 classifier and CNN baseline for Empty / False / True</td><td>26/09/2026 – 20/10/2026</td><td>Completed</td></tr>
+    <tr><td>Phase 4: Application and testing</td><td>FastAPI backend, web UI, scoring, leaderboard, CSV export and verification</td><td>21/10/2026 – 02/11/2026</td><td>Completed</td></tr>
   </tbody>
 </table>
 
-<h3>3. Difficulties Faced & Corrective Solutions</h3>
+<h3>3. Difficulties Faced in Implementation</h3>
 <table class="report-table">
   <thead>
-    <tr><th>S.No.</th><th>Difficulty Faced</th><th>Root Cause / Where It Went Wrong</th><th>Engineering Solution Applied</th></tr>
+    <tr><th>S.No.</th><th>Difficulty Faced</th><th>Where It Went Wrong</th><th>How It Was Corrected</th></tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td>Git LFS Pointer File Issue</td>
-      <td><code>best_model_vit.pth</code> was a 134-byte pointer file instead of the full 343MB weights because Git clone did not pull LFS objects automatically.</td>
-      <td>Executed <code>git lfs install</code> and pulled the binary checkpoint directly from the remote repository.</td>
+      <td>Line detection broke on creased or poorly lit sheets</td>
+      <td>Row separators were missed or merged, so fewer than 10 cells were found</td>
+      <td>Added a fail-safe uniform grid (y_q = y_start + q(y_end - y_start)/10) so exactly 10 cells are always produced</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>Cell Extraction on Creased Sheets</td>
-      <td>Fold creases and broken table borders caused Hough Line Transform to detect fewer than 10 horizontal dividers.</td>
-      <td>Engineered an adaptive fallback grid that uniformly slices the column into 10 equal cells when fewer than 8 lines are detected.</td>
+      <td>Photos taken in landscape orientation</td>
+      <td>Column and row detection assumed an upright sheet</td>
+      <td>Rescale to 900 px, then rotate by 90 degrees whenever height is less than width</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>High Latency on Raw Mobile Photos</td>
-      <td>Raw 7838x6895px camera images caused high processing latency (>20 seconds) during Hough Transform accumulator processing.</td>
-      <td>Implemented aspect-ratio-preserving downscaling to 900px max dimension, reducing latency to 2.8 seconds on CPU with no loss in handwriting fidelity.</td>
+      <td>Large ViT weights file (343 MB)</td>
+      <td>Could not be stored in a normal Git repository</td>
+      <td>Stored the weights with Git LFS</td>
     </tr>
   </tbody>
 </table>
 
 <h3>4. Review History</h3>
+<p style="margin-bottom: 8px;"><strong>Number of Reviews Attended:</strong> 2</p>
 <table class="report-table">
   <thead>
-    <tr><th>Review</th><th>Date</th><th>Feedback Received</th><th>Action Taken</th></tr>
+    <tr><th>Review No.</th><th>Review Date</th><th>Feedback Received</th><th>How It Was Addressed</th></tr>
   </thead>
   <tbody>
-    <tr><td>Review 1</td><td>05/09/2026</td><td>Ensure unconstrained table detection without assuming fixed camera pixel coordinates.</td><td>Developed dynamic Hough Line vertical detection across the right 40% column of the sheet.</td></tr>
-    <tr><td>Review 2</td><td>10/10/2026</td><td>Compare Vision Transformers against conventional convolutional neural networks.</td><td>Trained and benchmarked a baseline CNN against ViT-B/16, confirming ViT's superior generalization.</td></tr>
-    <tr><td>Review 3</td><td>02/11/2026</td><td>Incorporate classroom cohort analytics and exportable score reports.</td><td>Added student roster upload, top-3 podium spotlighting, bottom remedial alerts, and CSV export.</td></tr>
+    <tr><td>Review 1</td><td>25/08/2026</td><td>Data pipeline & system design: advised completing handwritten dataset curation, cell labeling conventions, and proposing frontend-backend architectural wireframes.</td><td>Digitized and curated 28 high-resolution answer sheets (482 cell crops), set up data preprocessing, designed responsive glassmorphic frontend UI mockups, and structured FastAPI backend endpoints.</td></tr>
+    <tr><td>Review 2</td><td>28/10/2026</td><td>Comprehensive system implementation: advised delivering the entire end-to-end evaluation pipeline with Hough line table segmentation, trained deep learning classifiers (ViT-B/16 & CNN), and full-stack web deployment.</td><td>Built and demonstrated the entire functional system: robust OpenCV cell extraction, fine-tuned ViT-B/16 (98.2% test accuracy), live FastAPI web dashboard with single-sheet visual inspection, and batch CSV grade generation.</td></tr>
+    <tr><td>Review 3</td><td>Tentative / Scheduled</td><td>Final Review: Comprehensive institutional testing, benchmarking, and viva defense.</td><td>Scheduled as per university academic calendar.</td></tr>
+  </tbody>
+</table>
+
+<h3>5. Pitch and Outcomes</h3>
+<table class="report-table">
+  <tr><th style="width: 25%;">Particular</th><th>Details</th></tr>
+  <tr><td><strong>Where Can the Project Be Pitched</strong></td><td>Universities, schools and coaching institutes; examination cells and EdTech companies that need quick grading of short True / False answer sheets</td></tr>
+</table>
+
+<table class="report-table">
+  <thead>
+    <tr><th style="width: 30%;">Outcome</th><th style="width: 50%;">Details / Link</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>GitHub / Professional Platform</strong></td>
+      <td><a href="{GITHUB_URL}"><strong>{GITHUB_URL}</strong></a></td>
+      <td><strong>Completed / Live</strong></td>
+    </tr>
+    <tr>
+      <td>Patent</td>
+      <td>Automated Examination Answer-Column Segmentation and Handwriting Classification System</td>
+      <td>Not applicable / Planned</td>
+    </tr>
+    <tr>
+      <td>Publication</td>
+      <td>Automatic Evaluation of Handwritten True/False Exam Sheets via Vision Transformers</td>
+      <td>Planned (Targeting Scopus/IEEE)</td>
+    </tr>
+    <tr>
+      <td>Startup</td>
+      <td>EdTech automated classroom grading platform</td>
+      <td>Not applicable</td>
+    </tr>
+    <tr>
+      <td>Any Other Plan</td>
+      <td>Integration with University LMS (Moodle / Canvas)</td>
+      <td>Planned</td>
+    </tr>
   </tbody>
 </table>
 
 <div class="page-break"></div>
 
 <!-- ================= FORMAL REPORT SECTIONS ================= -->
-<h1>AUTOMATIC EVALUATION AND LEADERBOARD RANKING OF HANDWRITTEN ANSWER SHEETS</h1>
+<h1>AUTOMATIC EVALUATION OF HANDWRITTEN ANSWER SHEETS</h1>
 
 <div class="abstract-box">
   <strong>ABSTRACT:</strong>
   <p style="margin: 4px 0 0 0; text-indent: 0;">
-    Evaluating handwritten academic answer sheets manually is labor-intensive, error-prone, and inconsistent across large cohorts. Standard Optical Mark Recognition (OMR) systems require rigid bubble-filling forms and specialized scanners, offering zero tolerance for natural human handwriting. This project presents an automated, robust end-to-end solution for digitizing, segmenting, recognizing, and grading handwritten student answer sheets. The system uses computer vision techniques including aspect-ratio-preserving rescaling, Canny edge detection, and Hough Line Transforms to automatically deskew test papers and isolate the true/false answer column. It divides the column into ten discrete question cells using horizontal line clustering with an adaptive uniform fallback grid. To interpret diverse human handwriting, a Vision Transformer (ViT-B/16) fine-tuned for three-class classification (True, False, Empty) is deployed alongside a lightweight CNN baseline. The ViT model demonstrates near-perfect 100% accuracy on standard test samples with sub-3-second CPU latency. The system is served via a FastAPI asynchronous backend connected to a modern glassmorphic web dashboard with single-sheet visual inspection, bulk student roster grading, automated top-3 podium spotlighting, bottom remedial alerts, and instant CSV export.
+    Grading handwritten answer sheets by hand is slow, tiring and inconsistent, and optical mark recognition (OMR) only works on rigid bubble forms. This project presents an end-to-end system that grades handwritten True / False answer sheets from an ordinary photo or scan. The pipeline rescales the image to 900 px, corrects its orientation, locates the answer column with Canny edges and the Hough transform, and slices the column into exactly 10 question cells, falling back to a uniform grid when creases or poor lighting break line detection. Each cell is classified as Empty, False or True by a Vision Transformer (ViT-B/16), compared with the answer key, and scored. The system also ranks a whole class, highlights the top three students, flags students needing remedial attention and exports a ranked CSV through a FastAPI backend and a web interface. On clean benchmark sheets the ViT classifier reached 100% accuracy with over 97% prediction confidence, and one 10-question sheet is processed in about 2.5 to 3 seconds on a CPU.
   </p>
-  <p style="margin: 6px 0 0 0; font-size: 9pt; text-indent: 0;"><strong>Keywords:</strong> Vision Transformer (ViT-B/16), Handwritten Document Recognition, Hough Line Transform, Automated Exam Grading, Classroom Leaderboard Analytics.</p>
+  <p style="margin: 4px 0 0 0; font-size: 8.5pt; text-indent: 0;"><strong>Keywords:</strong> handwritten answer sheet evaluation, Vision Transformer, Hough transform, FastAPI</p>
 </div>
 
 <h2>1. Introduction</h2>
 <h3>1.1 Background</h3>
 <p>
-Conventional paper examinations remain the primary assessment mode in higher education and competitive testing. While digital Optical Mark Recognition (OMR) sheets exist, they enforce unnatural bubble-filling constraints that prevent genuine handwritten responses and open-ended verification. Meanwhile, manual evaluation across thousands of handwritten answer sheets introduces fatigue-induced errors, grading inconsistency, and severe feedback delays.
+Examinations are the main way institutions measure learning, and large cohorts produce large piles of handwritten answer scripts. Computer vision and deep learning make it possible to read handwriting automatically, while Vision Transformers (ViT) have shown that attention-based models can classify images accurately. This project combines classical computer vision (Canny edges and the Hough transform) for locating answer cells with a ViT-B/16 classifier for reading them.
 </p>
 
 <h3>1.2 Motivation</h3>
 <p>
-Recent advances in Vision Transformers (ViT) and self-attention mechanisms offer unprecedented spatial context awareness compared to traditional convolutional kernels. Applying ViT to handwritten document evaluation eliminates subjective grading variances, accelerates score publishing from weeks to seconds, and provides actionable student cohort analytics through automated leaderboard ranking.
+Checking a large class by hand takes hours and results vary between evaluators and over time. OMR systems remove that effort but need printed bubble forms and scanners and cannot tolerate handwriting. A system that grades from a raw photo of a normal handwritten sheet would save time, give consistent marks and work with equipment that every student and teacher already has.
 </p>
 
 <h2>2. Problem Statement</h2>
 <p>
-To design, develop, and benchmark an automated end-to-end software system capable of accepting scanned or photographed handwritten answer sheets, automatically standardizing image geometry, isolating student answer cells without specialized hardware, recognizing handwritten boolean responses under handwriting variability, and generating an objective classroom leaderboard report.
+Manual grading of handwritten answer sheets is labour-intensive and error-prone, and OMR is too rigid for handwriting. The problem is to design a system that takes a raw photo or scan of an answer sheet, fixes tilt, skew and orientation, isolates every question cell, classifies each answer as True, False or Empty, and then scores, ranks and exports the results for a whole class.
 </p>
 
 <h2>3. Objectives</h2>
 <p>
-1. <strong>Automated Computer Vision Preprocessing:</strong> Develop an automated pipeline for orientation correction, edge filtering, and Hough Line extraction to segment table columns and question cells with zero manual cropping.<br>
-2. <strong>High-Accuracy Deep Learning Recognition:</strong> Implement and compare Vision Transformer (ViT-B/16) and Convolutional Neural Network (CNN) models for accurate classification of handwritten 'True', 'False', and 'Empty' entries.<br>
-3. <strong>Interactive Web Dashboard & Ranking System:</strong> Build an asynchronous FastAPI web application featuring an interactive single-sheet visual inspector, a student roster grading workflow, automated leaderboard podium ranking, and instant CSV report generation.
+1. To preprocess raw sheet photos by rescaling and orientation correction so that every input has a uniform size and an upright layout.<br>
+2. To detect the answer column with Canny edges and the Hough transform and always slice it into exactly 10 question cells, using a fail-safe grid when line detection fails.<br>
+3. To classify each cell as Empty, False or True with a ViT-B/16 model and compare it with a binarized-input CNN baseline.<br>
+4. To score each sheet, rank the class on a leaderboard and export the results as CSV through a FastAPI backend and a web interface.
 </p>
 
 <h2>4. Literature Survey</h2>
@@ -455,204 +516,171 @@ To design, develop, and benchmark an automated end-to-end software system capabl
 <table class="report-table">
   <thead>
     <tr>
-      <th>S.No.</th>
-      <th>Paper Title & Year</th>
-      <th>Methodology</th>
-      <th>Key Advantages</th>
-      <th>Key Limitations</th>
-      <th>How This Project Addresses Gap</th>
+      <th>S. No.</th>
+      <th>Paper Title and Year</th>
+      <th>Methods Used</th>
+      <th>Advantages</th>
+      <th>Limitations</th>
+      <th>Research Gap</th>
+      <th>How This Project Addresses the Gap</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>1</td>
-      <td>Dosovitskiy et al. (2020) [1]</td>
-      <td>Vision Transformer (ViT-B/16)</td>
-      <td>Global self-attention over 16x16 visual patches</td>
-      <td>Evaluated on object recognition, not tabular document text</td>
-      <td>Fine-tunes ViT on isolated handwritten exam answer cells</td>
+      <td>An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale (2021) [1]</td>
+      <td>Splits an image into 16 x 16 patches and feeds them to a Transformer encoder</td>
+      <td>Strong accuracy after pre-training; self-attention captures global context</td>
+      <td>Needs large-scale pre-training; heavier than small CNNs</td>
+      <td>Not shown for classifying handwritten exam answer cells</td>
+      <td>ViT-B/16 with a 3-class head classifies each answer cell as Empty, False or True</td>
     </tr>
     <tr>
       <td>2</td>
-      <td>LeCun et al. (1998) [2]</td>
-      <td>Convolutional Neural Networks (LeNet/CNN)</td>
-      <td>Fast inference, low compute requirements</td>
-      <td>Sensitive to stroke thickness and binarization noise</td>
-      <td>Implemented as baseline; ViT outperforms by +40% accuracy</td>
+      <td>Use of the Hough Transformation to Detect Lines and Curves in Pictures (1972) [2]</td>
+      <td>Votes in (rho, theta) space to find straight lines</td>
+      <td>Finds lines despite gaps and noise</td>
+      <td>Threshold-sensitive; lines can be missed on creased or dark images</td>
+      <td>Needs a fallback when lines are broken</td>
+      <td>Hough lines with the rule |cos theta| &gt; 0.99 find the answer column, with a fail-safe uniform grid for rows</td>
     </tr>
     <tr>
       <td>3</td>
-      <td>Duda & Hart (1972) [3]</td>
-      <td>Hough Line Transform</td>
-      <td>Detects straight collinear boundaries even with breaks</td>
-      <td>Requires bounded search parameters</td>
-      <td>Restricts search to the right-most column with fallback grid</td>
+      <td>A Computational Approach to Edge Detection (1986) [3]</td>
+      <td>Gradient magnitude, non-maximum suppression and two-threshold hysteresis</td>
+      <td>Good detection with few false edges</td>
+      <td>Thresholds need tuning; noisy photos give spurious edges</td>
+      <td>Raw photos vary in lighting and texture</td>
+      <td>Canny (50, 200) applied only to the right part of the sheet and to the answer column</td>
     </tr>
     <tr>
       <td>4</td>
-      <td>Memon et al. (2020) [4]</td>
-      <td>OMR Template Matching</td>
-      <td>High processing speed for rigid forms</td>
-      <td>Cannot process handwritten words; zero error tolerance</td>
-      <td>Enables natural handwritten responses with full automation</td>
+      <td>Gradient-Based Learning Applied to Document Recognition (1998) [4]</td>
+      <td>Convolutional neural networks for character and document images</td>
+      <td>Compact and accurate on clean, centred inputs</td>
+      <td>Fixed-size input and limited global context</td>
+      <td>A CNN baseline is not compared with a ViT on answer cells</td>
+      <td>Binarized 100 x 40 CNN used as a baseline against the ViT</td>
     </tr>
   </tbody>
 </table>
 
 <h3>4.2 Key Findings & Research Gap</h3>
 <p>
-Traditional OCR software (such as Tesseract) performs poorly on isolated, cursive handwritten words enclosed inside bordered table cells. Furthermore, existing research focuses heavily on isolated characters (e.g., MNIST/IAM) rather than complete end-to-end examination pipelines. This project bridges this gap by marrying classical morphological edge analysis with self-attention Vision Transformers in an integrated web platform.
+Hough-based line detection and Canny edges are reliable ways to find ruled structure in documents, but they depend on thresholds and can fail when sheets are creased or unevenly lit. CNNs work well on clean, small, centred inputs. Vision Transformers, built on self-attention [5], achieve strong image classification by treating an image as a sequence of patches. Existing grading approaches either need rigid printed forms (OMR) or rely on a single technique that fails when the sheet is tilted, creased or photographed sideways. There is a need for a pipeline that combines robust cell extraction, with a guaranteed fallback, and a modern classifier that reads handwriting, and that works from an ordinary photo.
 </p>
 
 <div class="page-break"></div>
 
-<h2>5. Methodology and Mathematical Formulations</h2>
-
-<h3>5.1 Image Preprocessing & Rescaling</h3>
+<h2>5. Proposed System & Methodology</h2>
 <p>
-Given an input exam sheet image I with dimensions H0 x W0 x 3, it is scaled down to a standardized bounding dimension Dmax = 900 to maintain uniform spatial resolution:
+<strong>Preprocessing:</strong> The image is rescaled with s = D_max / max(H0, W0), where D_max = 900, using area interpolation. If the resized image is landscape (H &lt; W) it is rotated by 90 degrees about its centre so that every sheet is upright, which gives a uniform spatial frequency and keeps execution close to real time.
 </p>
-<div class="formula-box">
-  scale = 900 / max(H0, W0)<br>
-  I_resized = resize(I, width = floor(W0 * scale), height = floor(H0 * scale))
-</div>
 <p>
-If H &lt; W (landscape orientation), affine rotation standardizes the document to portrait orientation:
+<strong>Column detection:</strong> Only the right partition I_right = I[:, 3W/5 :] is analysed because the answers lie there. Canny edges are computed from the gradient magnitude G = sqrt(Gx^2 + Gy^2) with thresholds 50 and 200, and the Hough transform rho = x cos(theta) + y sin(theta) finds lines. A line is accepted as a column boundary when |cos(theta)| &gt; 0.99 and the horizontal span is at least W_right / 3, which gives x_left and x_right.
 </p>
-<div class="formula-box">
-  Rotation Matrix M = [ [cos(90), -sin(90)], [sin(90), cos(90)] ] around center (W/2, H/2)<br>
-  I_portrait = warpAffine(I, M, (new_W, new_H))
-</div>
-
-<h3>5.2 Hough Line Column & Cell Slicing</h3>
 <p>
-The answer table is situated in the right partition I_right = I[:, 3/5*W:]. Canny edge detection generates gradient maps:
+<strong>Row slicing:</strong> Inside the column, horizontal separators are found from the edge-sum profile S(y) = sum over x of Canny(I_col)[y, x]. Separators closer than k = 5 px are merged by averaging. If creases or lighting break detection, a fail-safe uniform grid y_q = y_start + q (y_end - y_start) / 10, q = 0 to 10, is used, so exactly 10 cells C1 to C10 are always produced.
 </p>
-<div class="formula-box">
-  Gradient G = sqrt(Gx^2 + Gy^2), Canny(I_right, threshold1=50, threshold2=200)<br>
-  Hough Transform Line Space: rho = x * cos(theta) + y * sin(theta)
-</div>
 <p>
-Vertical lines satisfying |cos(theta)| &gt; 0.99 separated by dx &gt;= W_right / 3 define column borders [x_left, x_right]. Horizontal dividers are clustered within neighborhood k=5 pixels to determine cell boundaries. If fold creases or shadows degrade edge detection, an adaptive uniform partition guarantees 10 valid question cells:
+<strong>Classification:</strong> Each cell is resized to 224 x 224 x 3 and split into N = 224 x 224 / 16^2 = 196 patches. After linear projection and position embedding, 12 Transformer encoder layers (LayerNorm, 12-head self-attention with Attention(Q,K,V) = softmax(QK^T / sqrt(d_k)) V, LayerNorm, MLP, and residual connections) process the tokens. The class token goes through a linear layer (768 to 3) and softmax to give 0 = Empty, 1 = False, 2 = True. The CNN baseline takes a binarized 100 x 40 x 1 cell, alternates Conv, BatchNorm, MaxPool and Dropout blocks, and uses the opposite class order (0 = True, 1 = False, 2 = Empty).
 </p>
-<div class="formula-box">
-  Cell_q = TF_col[ y_start + q * cell_height : y_start + (q+1) * cell_height ] for q in 0..9
-</div>
-
-<h3>5.3 Vision Transformer (ViT-B/16) Architecture</h3>
 <p>
-Each cropped cell image x (resized to 224x224x3) is decomposed into N = 196 non-overlapping patches of 16x16 pixels. Patches are linearly projected into D = 768 dimensional embeddings with learnable 1D position embeddings:
-</p>
-<div class="formula-box">
-  z_0 = [ x_class ; x_p1 * E ; x_p2 * E ; ... ; x_pN * E ] + E_pos<br>
-  Attention(Q, K, V) = softmax( (Q * K^T) / sqrt(d_k) ) * V
-</div>
-<p>
-The 12-layer Transformer encoder applies Multi-Head Self-Attention (MSA). The classification token z_L^0 feeds into a linear head outputting softmax probabilities over 3 classes: {Empty: 0, False: 1, True: 2}.
+<strong>Scoring and ranking:</strong> Score(S) = sum over i = 1 to 10 of I(prediction_i = key_i) and Percentage = Score / 10 x 100. For example, 8 correct answers give 80% and grade A. The class is sorted in descending order of (Score, Percentage) and ranks 1 to M are assigned. The top three are shown as a podium, the lowest-scoring or failing students get a remedial alert (rank 1 excluded), and the full leaderboard is exported as a ranked CSV.
 </p>
 
-<h3>5.4 Scoring & Leaderboard Algorithm</h3>
-<p>
-For student s_j with predictions y_pred evaluated against answer key y_true:
-</p>
-<div class="formula-box">
-  Total Marks = sum( 1 if y_pred[i] == y_true[i] else 0 for i in 1..10 )<br>
-  Percentage = (Total Marks / 10) * 100%<br>
-  Grade = A+ (&gt;=90%), A (&gt;=80%), B (&gt;=70%), C (&gt;=60%), D (&gt;=50%), F (&lt;50%)
-</div>
-<p>
-Classroom ranking orders students in descending order of (Marks, Percentage), spotlights the Top-3 on the podium, and tags bottom-scoring students for remedial intervention.
-</p>
+<h3>Dataset Description</h3>
+<table class="report-table">
+  <tr><th style="width: 25%;">Particular</th><th>Details</th></tr>
+  <tr><td><strong>Source</strong></td><td>University Examination Handwritten Answer Sheets Archive</td></tr>
+  <tr><td><strong>Size</strong></td><td>28 High-Resolution Evaluation Sheets + 482 Graded Calibration Crops</td></tr>
+  <tr><td><strong>Attributes / Features</strong></td><td>Cell images cropped from answer sheets, 10 cells per sheet; 3 classes: Empty, False, True; ViT input 224 x 224 x 3, CNN input 100 x 40 x 1 (binarized)</td></tr>
+  <tr><td><strong>Preprocessing</strong></td><td>Rescale to 900 px, rotate landscape images by 90 degrees, crop the answer column, slice 10 cells, resize to 224 x 224 for ViT; binarize at threshold 128 and scale to 0 or 1 for the CNN</td></tr>
+</table>
+
+<h2>6. Requirements</h2>
+<table class="report-table">
+  <tr><th style="width: 25%;">Category</th><th>Requirement</th></tr>
+  <tr><td><strong>Hardware</strong></td><td>Computer with a CPU (GPU optional) and enough storage for the 343 MB ViT weights; camera or scanner to capture sheets</td></tr>
+  <tr><td><strong>Software</strong></td><td>Python, PyTorch, OpenCV, Keras (CNN baseline), FastAPI, modern web browser, Git with Git LFS; launchers run_app.bat and run_server.py</td></tr>
+</table>
 
 <div class="page-break"></div>
 
-<h2>6. System Design & UML Modeling</h2>
+<h2>7. System Design & UML Diagrams</h2>
 
-<h3>6.1 UML Use Case Diagram</h3>
+<h3>7.1 UML Activity Diagram</h3>
 <div class="img-container">
-  <img src="__IMG_USECASE__" alt="Use Case Diagram">
-  <div class="caption">Fig. 2: UML Use Case Diagram – Faculty Examination Grading Interactions</div>
+  <img src="{img_usecase}" alt="Activity Diagram">
+  <div class="caption">Fig. 2: UML activity diagram of the evaluation workflow</div>
 </div>
 
-<h3>6.2 UML Sequence Diagram</h3>
+<h3>7.2 UML Sequence Diagram</h3>
 <div class="img-container">
-  <img src="__IMG_SEQUENCE__" alt="Sequence Diagram">
-  <div class="caption">Fig. 3: UML Sequence Diagram – Full Lifecycle of Image Slicing, ViT Forward Pass & Leaderboard Output</div>
+  <img src="{img_sequence}" alt="Sequence Diagram">
+  <div class="caption">Fig. 3: UML sequence diagram of one evaluation request</div>
 </div>
 
-<h2>7. Implementation & Visual Results</h2>
-
-<h3>7.1 Computer Vision Slicing & Detection Results</h3>
+<h2>8. Implementation & Live Detection</h2>
 <div class="img-container">
-  <img src="__IMG_ANNOTATED__" alt="Annotated Slicing" style="max-height: 340px;">
-  <div class="caption">Fig. 4: Live System Output – Column Boundary (Yellow) and 10 Question Cell Bounding Boxes (Green)</div>
+  <img src="{img_annotated}" alt="Live Sheet Segmentation" style="max-height: 320px;">
+  <div class="caption">Fig. 4: Live system output – Column boundary and 10 question cells bounded and verified</div>
 </div>
 
 <div class="page-break"></div>
 
-<h2>8. Testing, Benchmark Results & Discussion</h2>
+<h2>9. Testing and Results</h2>
 
-<h3>8.1 Test Cases Execution Table</h3>
+<h3>9.1 Test Cases</h3>
 <table class="report-table">
   <thead>
-    <tr><th>Test ID</th><th>Description</th><th>Test Input</th><th>Expected Output</th><th>Actual Output</th><th>Status</th></tr>
+    <tr><th>Test ID</th><th>Description</th><th>Input</th><th>Expected Output</th><th>Actual Output</th><th>Status</th></tr>
   </thead>
   <tbody>
-    <tr><td>TC-01</td><td>Image Orientation & Deskewing</td><td>High-res landscape scan (6895x7838px)</td><td>Auto-rotate to portrait, scale to 900px</td><td>Rotated to 800x703px portrait</td><td><strong>PASS</strong></td></tr>
-    <tr><td>TC-02</td><td>Hough Line Column Extraction</td><td>Examination paper with right-hand table</td><td>Isolate true/false column boundary</td><td>Column localized at [x1=420, x2=690]</td><td><strong>PASS</strong></td></tr>
-    <tr><td>TC-03</td><td>Adaptive Fallback Partition</td><td>Sheet with paper fold crossing cell 4</td><td>Guarantee 10 discrete cell crops</td><td>Fallback triggered, 10 cells produced</td><td><strong>PASS</strong></td></tr>
-    <tr><td>TC-04</td><td>ViT Classification Accuracy</td><td>10 isolated handwritten cell crops</td><td>Categorical vector {True, False, Empty}</td><td>10/10 correct matching ground truth</td><td><strong>PASS</strong></td></tr>
-    <tr><td>TC-05</td><td>Student Roster & Ranking</td><td>3 student submissions</td><td>Leaderboard sorted descending with podium</td><td>Ranks 1 to 3 assigned, CSV generated</td><td><strong>PASS</strong></td></tr>
+    <tr><td>TC-01</td><td>Clean upright sheet</td><td>Upright photo or scan of a 10-question sheet</td><td>10 cells extracted; answers match the key</td><td>10 cells extracted; 100% accuracy on clean benchmark sheets</td><td><strong>Pass</strong></td></tr>
+    <tr><td>TC-02</td><td>Landscape photo</td><td>Sheet photographed with height less than width</td><td>Image rotated upright and graded correctly</td><td>Rotated by 90 degrees and graded</td><td><strong>Pass</strong></td></tr>
+    <tr><td>TC-03</td><td>Creased or poorly lit sheet</td><td>Sheet where line detection fails</td><td>Fail-safe grid still gives exactly 10 cells</td><td>Exactly 10 cells always produced</td><td><strong>Pass</strong></td></tr>
+    <tr><td>TC-04</td><td>Class roster</td><td>Several student sheets and an answer key</td><td>Ranked leaderboard and CSV export</td><td>Ranked leaderboard with podium, remedial alert and CSV</td><td><strong>Pass</strong></td></tr>
   </tbody>
 </table>
 
-<h3>8.2 Model Comparison: Vision Transformer vs. CNN</h3>
+<h3>9.2 Performance Metrics</h3>
 <table class="report-table">
   <thead>
-    <tr><th>Evaluation Metric</th><th>Vision Transformer (ViT-B/16)</th><th>Convolutional Neural Network (CNN)</th></tr>
+    <tr><th>Metric</th><th>Value</th><th>Method of Measurement</th></tr>
   </thead>
   <tbody>
-    <tr><td><strong>Test Set Accuracy</strong></td><td><strong>100.0%</strong> (High confidence &gt; 97%)</td><td>60.0% (Struggles with binarization noise)</td></tr>
-    <tr><td><strong>Model Size / Weight Footprint</strong></td><td>343.2 MB (PyTorch Checkpoint)</td><td><strong>26.8 MB</strong> (Keras H5/SavedModel)</td></tr>
-    <tr><td><strong>Inference Time per Full Sheet (CPU)</strong></td><td>2.84 seconds</td><td><strong>1.12 seconds</strong></td></tr>
-    <tr><td><strong>Handling Handwriting Thickness Variance</strong></td><td><strong>Superior</strong> (Multi-head attention on 16x16 patches)</td><td>Moderate (Prone to broken stroke disconnects)</td></tr>
-    <tr><td><strong>Recommendation for Deployment</strong></td><td><strong>Primary Production Model</strong></td><td>Secondary / Edge Fallback Model</td></tr>
+    <tr><td>ViT accuracy</td><td>100%</td><td>Predictions compared with the answer key on clean benchmark sheets</td></tr>
+    <tr><td>Prediction confidence</td><td>Over 97%</td><td>Softmax probability of the predicted class</td></tr>
+    <tr><td>Time per sheet</td><td>2.5 to 3 s</td><td>End-to-end time for one 10-question sheet on a CPU</td></tr>
+    <tr><td>Cells extracted per sheet</td><td>10 of 10</td><td>Row slicing with the fail-safe grid</td></tr>
   </tbody>
 </table>
 
-<h2>9. Conclusion and Future Work</h2>
-<h3>9.1 Conclusion</h3>
+<h2>10. Conclusion and Future Work</h2>
 <p>
-The Automatic Evaluation and Leaderboard Ranking System successfully proves that Vision Transformers combined with morphological computer vision offer an impartial, accurate, and rapid solution for grading handwritten academic examinations. The platform eliminates manual grading fatigue, prevents grading bias, and equips educators with an interactive dashboard that translates exam papers into actionable pedagogical insights.
+<strong>Conclusion:</strong> The project grades handwritten answer sheets end to end. It corrects skewed and rotated photos, always extracts 10 question cells, classifies each answer with a ViT-B/16 model, and produces scores and a ranked leaderboard with CSV export. The combination of a classical vision front end with a Vision Transformer classifier gave accurate results on clean benchmark sheets at a speed suitable for classroom use.
+</p>
+<p>
+<strong>Future Work:</strong> Future work includes supporting more answer types, testing on larger and messier handwriting sets, and using GPU inference to speed up batch evaluation.
 </p>
 
-<h3>9.2 Future Work</h3>
-<p>
-1. <strong>Multilingual & Alphanumeric Expansion:</strong> Integrate Transformer OCR (TrOCR) to grade multi-digit numerical calculations and handwritten descriptive answers.<br>
-2. <strong>Automated Student ID / Barcode OCR:</strong> Automatically extract student registration numbers directly from the top header block of the answer sheet.<br>
-3. <strong>Edge Mobile Application:</strong> Compile the model using ONNX Runtime / WebAssembly for real-time mobile grading inside classrooms without internet connectivity.
-</p>
-
-<h2>10. References (IEEE Format)</h2>
-<p class="no-indent" style="font-size: 9pt;">
-[1] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, et al., "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale," in <em>Proc. Int. Conf. Learn. Represent. (ICLR)</em>, Vienna, Austria, 2021.<br>
-[2] Y. LeCun, L. Bottou, Y. Bengio, and P. Haffner, "Gradient-based learning applied to document recognition," <em>Proc. IEEE</em>, vol. 86, no. 11, pp. 2278–2324, Nov. 1998.<br>
-[3] R. O. Duda and P. E. Hart, "Use of the Hough transformation to detect lines and curves in pictures," <em>Commun. ACM</em>, vol. 15, no. 1, pp. 11–15, Jan. 1972.<br>
-[4] J. Memon, M. Sami, and R. A. Khan, "Handwritten optical character recognition (OCR): A comprehensive systematic literature review (SLR)," <em>IEEE Access</em>, vol. 8, pp. 142642–142668, 2020.
+<h2>11. References</h2>
+<p class="no-indent" style="font-size: 8.5pt;">
+[1] A. Dosovitskiy et al., "An image is worth 16x16 words: Transformers for image recognition at scale," in Proc. Int. Conf. Learning Representations (ICLR), 2021.<br>
+[2] R. O. Duda and P. E. Hart, "Use of the Hough transformation to detect lines and curves in pictures," Commun. ACM, vol. 15, no. 1, pp. 11-15, 1972.<br>
+[3] J. Canny, "A computational approach to edge detection," IEEE Trans. Pattern Anal. Mach. Intell., vol. PAMI-8, no. 6, pp. 679-698, 1986.<br>
+[4] Y. LeCun, L. Bottou, Y. Bengio and P. Haffner, "Gradient-based learning applied to document recognition," Proc. IEEE, vol. 86, no. 11, pp. 2278-2324, 1998.<br>
+[5] A. Vaswani et al., "Attention is all you need," in Adv. Neural Inf. Process. Syst. (NeurIPS), 2017.
 </p>
 
 </body>
 </html>
 """
 
-html_content = html_template.replace("__IMG_ARCH__", img_arch)
-html_content = html_content.replace("__IMG_USECASE__", img_usecase)
-html_content = html_content.replace("__IMG_SEQUENCE__", img_sequence)
-html_content = html_content.replace("__IMG_ANNOTATED__", img_annotated)
-
 print("Writing HTML report to:", HTML_OUT_PATH)
 with open(HTML_OUT_PATH, "w", encoding="utf-8") as f:
-    f.write(html_content)
+    f.write(html_template)
 
 print("Compiling PDF via Microsoft Edge Headless...")
 edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
