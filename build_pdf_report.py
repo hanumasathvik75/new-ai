@@ -675,11 +675,150 @@ Hough-based line detection and Canny edges are reliable ways to find ruled struc
 </p>
 
 <div class="page-break"></div>
-<h2>Appendix: Live Web Application Execution Screenshot</h2>
+<h2>Appendix I: Live Web Application Execution Screenshot</h2>
 <div class="img-container" style="margin-top: 15px;">
   <img src="{img_live_ui}" alt="Live Web App Dashboard" style="width: 100%;">
   <div class="caption">Fig. 5: Full-Screen Live UI Inspection & Evaluation Dashboard (FastAPI Engine Online, 10/10 Score, Segmented Sheet with Bounding Boxes, and Individual Question Confidence)</div>
 </div>
+
+<div class="page-break"></div>
+<h2>Appendix II: Machine Learning Model Training Pipelines</h2>
+<p class="no-indent" style="font-size: 8.5pt; color: #475569; margin-bottom: 8px;">
+  Core training scripts for the Vision Transformer (ViT-B/16) fine-tuning pipeline and Convolutional Neural Network (CNN) baseline model.
+</p>
+<pre style="background: #0f172a; color: #f8fafc; padding: 12px; border-radius: 6px; font-size: 7.2pt; line-height: 1.35; overflow: hidden; white-space: pre-wrap; font-family: 'Consolas', monospace;">
+# ==============================================================================
+# 1. VISION TRANSFORMER (ViT-B/16) FINE-TUNING PIPELINE (PyTorch)
+# ==============================================================================
+import torch
+import torch.nn as nn
+from torchvision import models, transforms
+from torch.utils.data import DataLoader, Dataset
+from PIL import Image
+
+class AnswerCellDataset(Dataset):
+    def __init__(self, file_paths, labels, transform=None):
+        self.file_paths = file_paths
+        self.labels = labels
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.file_paths)
+
+    def __getitem__(self, idx):
+        image = Image.open(self.file_paths[idx]).convert("RGB")
+        if self.transform:
+            image = self.transform(image)
+        return image, torch.tensor(self.labels[idx], dtype=torch.long)
+
+def build_and_train_vit(train_loader, val_loader, num_epochs=15, device="cuda"):
+    # Load pre-trained Vision Transformer (ViT-B/16)
+    weights = models.ViT_B_16_Weights.DEFAULT
+    model = models.vit_b_16(weights=weights)
+
+    # Freeze backbone encoder layers for transfer learning
+    for param in model.parameters():
+        param.requires_grad = False
+
+    # Customize classification head for 3 target classes: [0: Empty, 1: False, 2: True]
+    in_features = model.heads.head.in_features
+    model.heads.head = nn.Sequential(
+        nn.Linear(in_features, 256),
+        nn.ReLU(),
+        nn.Dropout(p=0.3),
+        nn.Linear(256, 3)
+    )
+    model.to(device)
+
+    criterion = nn.CrossEntropyLoss()
+    optimizer = torch.optim.AdamW(model.heads.head.parameters(), lr=1e-4, weight_decay=1e-2)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs)
+
+    best_val_acc = 0.0
+    for epoch in range(num_epochs):
+        model.train()
+        running_loss, correct, total = 0.0, 0, 0
+        for images, labels in train_loader:
+            images, labels = images.to(device), labels.to(device)
+            optimizer.zero_grad()
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item() * images.size(0)
+            preds = torch.argmax(outputs, dim=1)
+            correct += (preds == labels).sum().item()
+            total += labels.size(0)
+
+        scheduler.step()
+        train_acc = correct / total
+
+        # Validation phase
+        model.eval()
+        val_correct, val_total = 0, 0
+        with torch.no_grad():
+            for images, labels in val_loader:
+                images, labels = images.to(device), labels.to(device)
+                preds = torch.argmax(model(images), dim=1)
+                val_correct += (preds == labels).sum().item()
+                val_total += labels.size(0)
+
+        val_acc = val_correct / val_total
+        print(f"Epoch [{{epoch+1}}/{{num_epochs}}] - Train Acc: {{train_acc*100:.2f}}% - Val Acc: {{val_acc*100:.2f}}%")
+
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            torch.save(model.state_dict(), "best_models/best_model_vit.pth")
+
+    return model
+
+# ==============================================================================
+# 2. CONVOLUTIONAL NEURAL NETWORK (CNN) BASELINE TRAINING PIPELINE (Keras)
+# ==============================================================================
+import tensorflow as tf
+from tensorflow.keras import layers, models
+
+def build_and_train_cnn(train_data, val_data, epochs=25):
+    model = models.Sequential([
+        layers.Input(shape=(128, 128, 3)),
+        layers.Conv2D(32, (3, 3), activation='relu', padding='same'),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D((2, 2)),
+
+        layers.Conv2D(64, (3, 3), activation='relu', padding='same'),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D((2, 2)),
+
+        layers.Conv2D(128, (3, 3), activation='relu', padding='same'),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D((2, 2)),
+
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.4),
+        layers.Dense(3, activation='softmax')
+    ])
+
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
+        loss='categorical_crossentropy',
+        metrics=['accuracy']
+    )
+
+    callbacks = [
+        tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True),
+        tf.keras.callbacks.ModelCheckpoint('best_models/best_model_cnn.keras', save_best_only=True)
+    ]
+
+    history = model.fit(
+        train_data,
+        validation_data=val_data,
+        epochs=epochs,
+        callbacks=callbacks
+    )
+    return model
+</pre>
 
 </body>
 </html>
