@@ -431,7 +431,6 @@ html_template = f"""<!DOCTYPE html>
   <tbody>
     <tr><td>Review 1</td><td>25/08/2026</td><td>Data pipeline & system design: advised completing handwritten dataset curation, cell labeling conventions, and proposing frontend-backend architectural wireframes.</td><td>Digitized and curated 28 high-resolution answer sheets (482 cell crops), set up data preprocessing, designed responsive glassmorphic frontend UI mockups, and structured FastAPI backend endpoints.</td></tr>
     <tr><td>Review 2</td><td>13/10/2026</td><td>Comprehensive system implementation: advised delivering the entire end-to-end evaluation pipeline with Hough line table segmentation, trained deep learning classifiers (ViT-B/16 & CNN), and full-stack web deployment.</td><td>Built and demonstrated the entire functional system: robust OpenCV cell extraction, fine-tuned ViT-B/16 (98.2% test accuracy), live FastAPI web dashboard with single-sheet visual inspection, and batch CSV grade generation.</td></tr>
-    <tr><td>Review 3</td><td>Tentative / Scheduled</td><td>Final Review: Comprehensive institutional testing, benchmarking, and viva defense.</td><td>Scheduled as per university academic calendar.</td></tr>
   </tbody>
 </table>
 
